@@ -1,0 +1,115 @@
+SQL FILE
+CREATE DATABASE vehicle_service;
+USE vehicle_service;
+CREATE TABLE bookings (
+    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(100) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+    email VARCHAR(100),
+    vehicle_model VARCHAR(100) NOT NULL,
+    registration_no VARCHAR(20) NOT NULL,
+    service_type VARCHAR(100) NOT NULL,
+    booking_date DATE NOT NULL,
+    status VARCHAR(20) DEFAULT 'Pending'
+);
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL
+);
+INSERT INTO bookings (customer_name, phone, email, vehicle_model, registration_no, service_type, booking_date)
+VALUES
+('Ravi Kumar', '9876543210', 'ravi@example.com', 'Honda City', 'KA01AB1234', 'Oil Change', '2025-05-15'),
+('Priya Mehta', '9123456789', 'priya@example.com', 'Hyundai i20', 'KA02CD5678', 'Brake Repair', '2025-05-16');
+SELECT * FROM bookings ORDER BY booking_date DESC;
+UPDATE bookings
+SET status = 'Completed'
+WHERE booking_id = 1;
+
+PYTHON
+'''from flask import Flask, request, jsonify, render_template
+import mysql.connector
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)  # Allow frontend JS to access backend
+
+# MySQL connection
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="vehicle_service"
+)
+cursor = conn.cursor()
+
+@app.route("/")
+def home():
+    return "Backend is running"
+
+@app.route("/book", methods=["POST"])
+def book_service():
+    data = request.get_json()
+    try:
+        cursor.execute("""
+            INSERT INTO bookings (customer_name, phone, email, vehicle_model, registration_no, service_type, booking_date)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """, (
+            data['name'],
+            data['phone'],
+            data['email'],
+            data['vehicle_model'],
+            data['registration_no'],
+            data['service_type'],
+            data['booking_date']
+        ))
+        conn.commit()
+        return jsonify({"message": "✅ Service has been booked successfully!"})
+    except Exception as e:
+        print(e)
+        return jsonify({"message": "❌ Booking failed!"}), 500
+
+if __name__ == "__main__":
+    app.run(debug=True)'''
+from flask import Flask, request, jsonify, send_file
+import mysql.connector
+
+
+app = Flask(__name__, static_folder="/")
+
+conn = mysql.connector.connect(
+    host="127.0.0.1",
+    user="root",
+    port=3306,
+    password="1239",
+    database="vehicle_service"
+)
+cursor = conn.cursor()
+
+@app.route("/")
+def home():
+    return send_file("service.html")
+
+@app.route("/book", methods=["POST"])
+def book_service():
+    data = request.get_json()
+    cursor.execute("""
+        INSERT INTO bookings (customer_name, phone, email, vehicle_model, registration_no, service_type, booking_date)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """, (
+        data['name'],
+        data['phone'],
+        data['email'],
+        data['vehicle_model'],
+        data['registration_no'],
+        data['service_type'],
+        data['booking_date']
+    ))
+
+    conn.commit()
+    return jsonify({"message": "Service booked!"})
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+THIS IS PYTHON PYTHON FILE
