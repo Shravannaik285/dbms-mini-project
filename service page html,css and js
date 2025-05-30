@@ -1,0 +1,186 @@
+HTML FILE
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="service.css">
+</head>
+<body>
+    <div class="booking-form">
+  <h2>Book Your Vehicle Service 🛠️</h2>
+  <p>
+    Fill out the form below to schedule your service appointment.<br>
+    We'll notify you once your booking is confirmed.
+  </p>
+
+  <form id="serviceForm">
+    <label for="name">Full Name</label>
+    <input type="text" name="name" id="name" placeholder="Enter your full name" required>
+    <br>
+    <label for="phone">Phone Number</label>
+    <input type="tel" name="phone" id="phone" placeholder="Enter your phone number" required>
+    <br>
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" placeholder="Enter your email (optional)">
+    <br>
+    <label for="vehicle_model">Vehicle Model</label>
+    <input type="text" name="vehicle_model" id="vehicle_model" placeholder="E.g., Honda City, Swift" required>
+    <br>
+    <label for="registration_no">Registration Number</label>
+    <input type="text" name="registration_no" id="registration_no" placeholder="E.g., KA01AB1234" required>
+    <br>
+    <label for="service_type">Select Service</label>
+    <select name="service_type" id="service_type" required>
+      <option value="">-- Choose a Service --</option>
+      <option value="Oil Change">Oil Change</option>
+      <option value="Brake Repair">Brake Repair</option>
+      <option value="Engine Diagnostics">Engine Diagnostics</option>
+    </select>
+    <br>
+    <label for="booking_date">Preferred Date</label>
+    <input type="date" name="booking_date" id="booking_date" required>
+
+    <button type="submit">Book Service</button>
+  </form>
+
+  <!-- Optional: notification popup -->
+  <div id="notification" class="notification" style="display: none;">
+    <p id="message"></p>
+  </div>
+  <div class="btn">     
+  <a href="../landing/landing.html"><h2>Back</h2></a>
+</div>
+</div>       
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+CSS FILE
+body{
+    background: url(anastasiia-krutota-otf4dQgdNqo-unsplash.jpg);
+    color:white;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.booking-form {
+  border: 2px solid white;        
+  max-width: 500px;               
+  margin: 40px auto;              
+  padding: 20px;                  
+  border-radius: 10px;            
+  background-color: rgba(0, 0, 0, 0.6); 
+  align-items: center;
+  text-align: center;
+}
+
+#serviceForm{
+          
+  padding: 30px;                     
+  max-width: 500px;                  
+  margin: 50px auto;                 
+  border-radius: 10px;               
+  background-color: rgba(0, 0, 0, 0.6); 
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  color: white;                      
+  font-family: Arial, sans-serif;
+  
+}
+#serviceForm label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+#serviceForm input,
+#serviceForm select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+#serviceForm button {
+  margin-top: 20px;
+  padding: 12px;
+  width: 100%;
+  background-color: #00bfff;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#serviceForm button:hover {
+  background-color: #0077aa;
+}
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #28a745;
+  padding: 15px 20px;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  font-weight: bold;
+  z-index: 999;
+}
+.btn{
+  border:2px solid black;
+  background-color: white;
+  text-decoration: none;
+}
+
+JAVASCRIPT FILE
+
+document.getElementById("serviceForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const formData = {
+    name: document.getElementById("name").value,
+    phone: document.getElementById("phone").value,
+    email: document.getElementById("email").value,
+    vehicle_model: document.getElementById("vehicle_model").value,
+    registration_no: document.getElementById("registration_no").value,
+    service_type: document.getElementById("service_type").value,
+    booking_date: document.getElementById("booking_date").value,
+  };
+
+  fetch("/book", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(formData)
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Network error");
+      return res.json();
+    })
+    .then((data) => {
+      showNotification(data.message || "✅ Service booked successfully!");
+      document.getElementById("serviceForm").reset();
+    })
+    .catch((err) => {
+      console.error(err);
+      showNotification("❌ Something went wrong. Please try again.");
+    });
+});
+
+function showNotification(message) {
+  const box = document.getElementById("notification");
+  document.getElementById("message").innerText = message;
+  box.style.display = "block";
+  setTimeout(() => {
+    box.style.display = "none";
+  }, 3000);
+}
