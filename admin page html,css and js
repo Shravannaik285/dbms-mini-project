@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Service Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Body and Container Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #eef2f6; /* Lighter background */
+            color: #334155; /* Darker text for better contrast */
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top */
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px; /* Adjusted max-width for more fields */
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Softer, larger shadow */
+            box-sizing: border-box;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #1e293b; /* Even darker headings */
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 2.5rem; /* Larger main title */
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 1.8rem; /* Slightly larger section titles */
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0; /* Subtle separator */
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background-color: #f8fafc; /* Slightly off-white background for form */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px; /* Increased gap */
+        }
+
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: repeat(3, 1fr); /* 3 columns for larger screens */
+            }
+            .form-group.full-width {
+                grid-column: span 3; /* Full width for specific fields if needed */
+            }
+            .form-actions {
+                grid-column: span 3; /* Span full width for actions */
+            }
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        select {
+            padding: 12px 15px; /* More padding */
+            border: 1px solid #cbd5e1; /* Lighter border */
+            border-radius: 8px; /* More rounded */
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 1rem;
+            color: #334155;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #ffffff; /* Ensure consistent background */
+            -webkit-appearance: none; /* Remove default select styling */
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #4f46e5; /* Deeper blue focus */
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); /* Matching shadow */
+        }
+
+        select {
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2C197.3L159.2%2C69.5c-3.2-3.2-8.4-3.2-11.6%2C0L5.4%2C197.3c-3.2%2C3.2-3.2%2C8.4%2C0%2C11.6l15.4%2C15.4c3.2%2C3.2%2C8.4%2C3.2%2C11.6%2C0l119.8-119.8l119.8%2C119.8c3.2%2C3.2%2C8.4%2C3.2%2C11.6%2C0l15.4-15.4C290.2%2C205.7%2C290.2%2C200.5%2C287%2C197.3z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 12px;
+            padding-right: 35px; /* Make space for the arrow */
+        }
+
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px; /* Gap between buttons */
+            margin-top: 25px;
+        }
+
+        /* Button Styles */
+        button {
+            padding: 12px 25px; /* More padding */
+            border: none;
+            border-radius: 8px; /* More rounded */
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        button:hover {
+            transform: translateY(-2px); /* Lift effect */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #6366f1, #4f46e5); /* Gradient blue */
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(to right, #4f46e5, #3730a3); /* Darker gradient on hover */
+        }
+
+        .btn-danger {
+            background: linear-gradient(to right, #ef4444, #dc2626); /* Gradient red */
+            color: #ffffff;
+        }
+        .btn-danger:hover {
+            background: linear-gradient(to right, #dc2626, #b91c1c); /* Darker gradient on hover */
+        }
+
+        .btn-secondary {
+            background-color: #6b7280;
+            color: #ffffff;
+        }
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+
+        /* Table Styles */
+        .table-section {
+            padding: 30px;
+            background-color: #f8fafc; /* Slightly off-white background for table */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .overflow-x-auto {
+            overflow-x: auto; /* Ensures table is scrollable on small screens */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate; /* Use separate for rounded corners on cells */
+            border-spacing: 0;
+            margin-top: 20px;
+            border-radius: 10px; /* Apply to table itself */
+            overflow: hidden; /* Hide overflow for rounded corners */
+        }
+
+        th, td {
+            padding: 15px 15px; /* More padding */
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0; /* Lighter border */
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: #eef2f6; /* Lighter header background */
+            font-weight: 600;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.05em; /* Slight letter spacing */
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fdfdfe; /* Very light subtle stripe */
+        }
+
+        tr:hover {
+            background-color: #f0f4f8; /* Subtle hover effect */
+        }
+
+        .no-customers-message {
+            text-align: center;
+            color: #64748b;
+            margin-top: 20px;
+            font-style: italic;
+            padding: 15px;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        /* Message Box Styles */
+        .message-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50; /* Green for success */
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none; /* Hidden by default */
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            transform: translateY(-20px); /* Start slightly above */
+        }
+        .message-box.error {
+            background-color: #f44336; /* Red for error */
+        }
+        .message-box.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0); /* Slide into view */
+        }
+
+        /* Utility classes for hidden elements */
+        .hidden {
+            display: none !important;
+        }
+
+        /* SVG icon styling within buttons */
+        button svg {
+            margin-right: 8px;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-content p {
+            font-size: 1.1rem;
+            color: #334155;
+            margin-bottom: 25px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="container">
+        <h1>Customer Service Admin Panel</h1>
+
+        <div id="messageBox" class="message-box"></div>
+
+        <div class="form-section">
+            <h2 id="formTitle">Add New Service Request</h2>
+            <form id="customerForm" class="form-grid">
+                <input type="hidden" id="customerId">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" placeholder="Customer's Full Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="customer@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" placeholder="e.g., +1-123-456-7890">
+                </div>
+                <div class="form-group">
+                    <label for="vehicleModel">Vehicle Model</label>
+                    <input type="text" id="vehicleModel" placeholder="e.g., Honda Civic, Tesla Model 3">
+                </div>
+                <div class="form-group">
+                    <label for="service">Select Service</label>
+                    <select id="service" required>
+                        <option value="">-- Select a Service --</option>
+                        <option value="Oil Change">Oil Change</option>
+                        <option value="Tire Rotation">Tire Rotation</option>
+                        <option value="Brake Inspection">Brake Inspection</option>
+                        <option value="Engine Diagnostic">Engine Diagnostic</option>
+                        <option value="General Maintenance">General Maintenance</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="preferredDate">Preferred Date</label>
+                    <input type="date" id="preferredDate" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        <span id="submitButtonText">Add Service Request</span>
+                    </button>
+                    <button type="button" id="cancelButton" class="btn-secondary hidden">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-section">
+            <h2>Service Request List</h2>
+            <div class="overflow-x-auto">
+                <table id="customerTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Vehicle Model</th>
+                            <th>Service</th>
+                            <th>Preferred Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customerTableBody">
+                        </tbody>
+                </table>
+            </div>
+            <p id="noCustomersMessage" class="no-customers-message hidden">No service requests found.</p>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://127.0.0.1:5000/api/customers'; // Ensure this matches your Flask backend URL
+
+        const customerForm = document.getElementById('customerForm');
+        const customerIdInput = document.getElementById('customerId');
+        const fullNameInput = document.getElementById('fullName');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const vehicleModelInput = document.getElementById('vehicleModel');
+        const serviceInput = document.getElementById('service');
+        const preferredDateInput = document.getElementById('preferredDate');
+
+        const submitButtonText = document.getElementById('submitButtonText');
+        const formTitle = document.getElementById('formTitle');
+        const cancelButton = document.getElementById('cancelButton');
+        const customerTableBody = document.getElementById('customerTableBody');
+        const noCustomersMessage = document.getElementById('noCustomersMessage');
+        const messageBox = document.getElementById('messageBox');
+
+        let editingCustomerId = null; // To keep track of the customer being edited
+
+        // Function to display messages (success/error)
+        function showMessage(message, type = 'success') {
+            messageBox.textContent = message;
+            messageBox.className = 'message-box show'; // Reset classes
+            if (type === 'error') {
+                messageBox.classList.add('error');
+            } else {
+                messageBox.classList.remove('error');
+            }
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, 3000); // Hide after 3 seconds
+        }
+
+        // Function to fetch and display customers
+        async function fetchCustomers() {
+            try {
+                const response = await fetch(API_BASE_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const customers = await response.json();
+                renderCustomers(customers);
+            } catch (error) {
+                console.error('Error fetching customers:', error);
+                showMessage('Failed to load service requests. Please check the backend server.', 'error');
+            }
+        }
+
+        // Function to render customers in the table
+        function renderCustomers(customers) {
+            customerTableBody.innerHTML = ''; // Clear existing rows
+            if (customers.length === 0) {
+                noCustomersMessage.classList.remove('hidden');
+                return;
+            }
+            noCustomersMessage.classList.add('hidden');
+
+            customers.forEach(customer => {
+                const row = customerTableBody.insertRow();
+                row.innerHTML = `
+                    <td>${customer.id}</td>
+                    <td>${customer.full_name}</td>
+                    <td>${customer.email}</td>
+                    <td>${customer.phone || 'N/A'}</td>
+                    <td>${customer.vehicle_model || 'N/A'}</td>
+                    <td>${customer.service || 'N/A'}</td>
+                    <td>${customer.preferred_date || 'N/A'}</td>
+                    <td>
+                        <button onclick="editCustomer(${customer.id})" class="btn-secondary">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                        </button>
+                        <button onclick="deleteCustomer(${customer.id})" class="btn-danger">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </td>
+                `;
+            });
+        }
+
+        // Handle form submission (Add/Update)
+        customerForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const customerData = {
+                full_name: fullNameInput.value,
+                email: emailInput.value,
+                phone: phoneInput.value || null,
+                vehicle_model: vehicleModelInput.value || null,
+                service: serviceInput.value || null,
+                preferred_date: preferredDateInput.value || null
+            };
+
+            // Basic validation for required fields
+            if (!customerData.full_name || !customerData.email || !customerData.service || !customerData.preferred_date) {
+                showMessage('Please fill in all required fields (Full Name, Email, Service, Preferred Date).', 'error');
+                return;
+            }
+
+            try {
+                let response;
+                if (editingCustomerId) {
+                    // Update existing customer
+                    response = await fetch(`${API_BASE_URL}/${editingCustomerId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(customerData)
+                    });
+                    if (response.ok) {
+                        showMessage('Service request updated successfully!');
+                    } else {
+                        throw new Error(`Failed to update service request: ${response.statusText}`);
+                    }
+                } else {
+                    // Add new customer
+                    response = await fetch(API_BASE_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(customerData)
+                    });
+                     if (response.ok) {
+                        showMessage('Service request added successfully!');
+                    } else {
+                        throw new Error(`Failed to add service request: ${response.statusText}`);
+                    }
+                }
+
+                customerForm.reset(); // Clear form
+                editingCustomerId = null; // Reset editing state
+                updateFormForAdd(); // Switch back to 'Add' mode
+                fetchCustomers(); // Refresh the list
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                showMessage(`Operation failed: ${error.message}`, 'error');
+            }
+        });
+
+        // Function to set form for editing
+        async function editCustomer(id) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/${id}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const customer = await response.json();
+
+                editingCustomerId = customer.id;
+                fullNameInput.value = customer.full_name;
+                emailInput.value = customer.email;
+                phoneInput.value = customer.phone || '';
+                vehicleModelInput.value = customer.vehicle_model || '';
+                serviceInput.value = customer.service || '';
+                preferredDateInput.value = customer.preferred_date || '';
+
+
+                updateFormForEdit();
+                window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top to see the form
+            } catch (error) {
+                console.error('Error fetching customer for edit:', error);
+                showMessage('Failed to load service request for editing.', 'error');
+            }
+        }
+
+        // Function to update form UI for 'Add' mode
+        function updateFormForAdd() {
+            formTitle.textContent = 'Add New Service Request';
+            submitButtonText.textContent = 'Add Service Request';
+            cancelButton.classList.add('hidden');
+            customerIdInput.value = ''; // Clear hidden ID
+            customerForm.reset(); // Clear form fields
+            editingCustomerId = null;
+        }
+
+        // Function to update form UI for 'Edit' mode
+        function updateFormForEdit() {
+            formTitle.textContent = 'Edit Service Request';
+            submitButtonText.textContent = 'Update Service Request';
+            cancelButton.classList.remove('hidden');
+        }
+
+        // Cancel button functionality
+        cancelButton.addEventListener('click', updateFormForAdd);
+
+        // Function to delete a customer
+        async function deleteCustomer(id) {
+            // Using a custom modal for confirmation instead of window.confirm
+            showConfirmationModal('Are you sure you want to delete this service request?', async () => {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        showMessage('Service request deleted successfully!');
+                        fetchCustomers(); // Refresh the list
+                        if (editingCustomerId === id) { // If the deleted customer was being edited
+                            updateFormForAdd(); // Reset form to add mode
+                        }
+                    } else {
+                        throw new Error(`Failed to delete service request: ${response.statusText}`);
+                    }
+                } catch (error) {
+                    console.error('Error deleting customer:', error);
+                    showMessage(`Failed to delete service request: ${error.message}`, 'error');
+                }
+            });
+        }
+
+        // Custom Confirmation Modal (replaces window.confirm)
+        function showConfirmationModal(message, onConfirm) {
+            let modal = document.getElementById('confirmationModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'confirmationModal';
+                modal.className = 'modal-overlay';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <p id="modalMessage"></p>
+                        <div class="modal-actions">
+                            <button id="modalConfirmBtn" class="btn-danger">Yes, Delete</button>
+                            <button id="modalCancelBtn" class="btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+
+                document.getElementById('modalConfirmBtn').addEventListener('click', () => {
+                    onConfirm();
+                    modal.classList.remove('show');
+                });
+                document.getElementById('modalCancelBtn').addEventListener('click', () => {
+                    modal.classList.remove('show');
+                });
+            }
+            document.getElementById('modalMessage').textContent = message;
+            modal.classList.add('show');
+        }
+
+
+        // Initial fetch when the page loads
+        document.addEventListener('DOMContentLoaded', fetchCustomers);
+    </script>
+
+    <div id="confirmationModal" class="modal-overlay">
+        <div class="modal-content">
+            <p id="modalMessage"></p>
+            <div class="modal-actions">
+                <button id="modalConfirmBtn" class="btn-danger">Yes, Delete</button>
+                <button id="modalCancelBtn" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
