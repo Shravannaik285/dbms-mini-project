@@ -1,0 +1,65 @@
+HTML DOCUMENT
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About garage</title>
+    <link rel="stylesheet" href="about.css">
+</head>
+<body>
+    <div class="box1">
+        <h1>🧾 About AutoCare</h1>
+        <h3>🛠️ Who We Are</h3>
+        <p>AutoCare is a trusted vehicle service and maintenance platform dedicated to delivering professional, reliable, and affordable automotive care. With years of experience and a team of certified mechanics, we ensure your vehicle receives the attention it deserves</p>
+        <br>
+        <h1>🎯 Our Mission</h1>
+        <p>To simplify and streamline the vehicle servicing experience by offering transparent pricing, top-tier service, and easy online bookings—all under one digital roof.</p>
+        <h1>⭐ Why Choose AutoCare?</h1>
+        <p>✅ Certified & experienced mechanics
+           <br>
+           ✅ High-quality spare parts
+           <br>
+           ✅ On-time service delivery
+           <br>
+           ✅ Transparent billing
+           <br>
+           ✅ Customer-first approach</p>
+    </div>
+   <a href="../landing/landing.html"><button class="bt1">BACK</button></a>               
+</body>
+</html>
+
+CSS FILE
+body{
+   background-image: url(pexels-padrinan-19670.jpg);
+   background-repeat: no-repeat;
+   background-size: cover;
+}
+*{
+    padding: 0;
+}
+.box1{
+    padding-left: 30%;
+    padding-right:30%;
+    padding-top:65px;
+    padding-bottom: 25px;
+    font-size: 20px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color:black;
+}   
+.bt1{
+    color:white;
+    margin:20px auto;
+    padding-left: 15px;
+    padding-right:15px;
+    align-items: center;
+    text-align: center;
+    padding-top:10px;
+    padding-bottom:10px;
+    background-color: blueviolet;
+
+}
+.bt1:hover{
+    background-color: black;
+}
