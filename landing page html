@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing</title>
+    <link rel="stylesheet" href="landing.css">
+</head>
+<body>
+    
+    <div data-aos="flip-up">                    
+    <div class="hero">
+        <h1>Welcome to AutoCare 🚗</h1>
+        <p>Your trusted partner for hassle-free vehicle service booking! 🛠️</p>
+    </div>
+    </div>
+    <br>
+    <div class="aboutus">
+        <a href="../about/about.html"><h2 id="h2">About Us 🧑‍🔧</h2> </a>
+        <p>
+        AutoCare is a smart and simple online platform that helps you book services for your vehicle in just a few clicks. <br>
+        Whether it's regular maintenance or an urgent fix, we’ve got you covered with reliable service and real-time booking. <br><br>
+       ✅ Easy to use <br>
+       ✅ Fast confirmation <br>
+       ✅ Professional mechanics
+       </p>
+    </div>
+    <br>
+    <div class="service">
+        <a href="../service/service.html"><h2>Service🛠️</h2></a>
+       <ul>
+       <li>🔧 Oil Change – Smooth running engine guaranteed</li>
+      <li>🛞 Brake Repair – Drive safe, stop safer</li>
+      <li>🩺 General Checkup – Full health check for your car</li>
+     </ul>
+
+    </div>
+    <br>
+    <div class="contact">
+        <h2>Contact Us 📬</h2>
+        <p>📧 Email: support@autocare.com</p>
+        <p>📱 Phone: +91-98765-43210</p>
+        <p>📍 Location: Bengaluru, India 🇮🇳</p>
+    </div>
+    <br>
+
+    <div class="admin">
+        <a href="../admin/index.html"><h2>👨‍💼 Admin Dashboard</h2></a>
+        <h2>👨‍💼 Admin Dashboard</h2>
+        <p>You have full access to the system.</p>
+        From this dashboard, you can manage service records, customer data, vehicle details,
+        and service bookings. Use the navigation menu to add, update, delete, or view records. This platform helps ensure that
+        vehicle servicing operations are streamlined and effectively monitored.</p>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 AutoCare 🚗 | All rights reserved. Made with ❤️ for smooth rides.</p>
+    </footer>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+
+
+</body>
+</html>
